@@ -6,9 +6,18 @@
 </head>
 
 <body>
-    <button onclick="showdata()">Show Data</button>
+    <button onclick="showdummydata()">Show Dummy Data</button>
+
+    <button onclick="showwiengvdata()">Show Wien.gv Data</button>
+
+    <button onclick="showrandWedding()">Radom Wedding</button>
+
+
+
     <div id="data-container"></div>
-    <script>function showdata() {
+
+
+    <script>function showdummydata() {
        fetch('https://jsonplaceholder.typicode.com/todos/1')
            .then(response => response.json())
            .then(data => {
@@ -19,6 +28,34 @@
                     `;
            })
            .catch(err => console.log(err));
-    }</script>
+    }
+
+    function showwiengvdata() {
+        fetch('https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TRAUMHOCHZEITOGD&srsName=EPSG:4326&outputFormat=json')
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
+    }
+
+    function showrandWedding() {
+        let wedding = [];
+        fetch('https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TRAUMHOCHZEITOGD&srsName=EPSG:4326&outputFormat=json')
+            .then(response => response.json())
+            .then(data => {
+                // Populate the `wedding` array with LOCATIONs
+                wedding = data.features.map(feature => feature.properties.LOCATION);
+
+                // Generate a random index and display a random wedding location
+                const randomIndex = Math.floor(Math.random() * wedding.length);
+                alert(wedding[randomIndex]);
+            })
+            .catch(err => console.error(err));
+    }
+
+
+
+
+
+    </script>
 </body>
 </html>
